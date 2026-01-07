@@ -40,16 +40,11 @@ S(lex_mul   ) { Step n = (in[pos++] == '*' ? and : or); n(StepCon); }
 S(lex_div   ) { Step n = (in[pos++] == '/' ? and : or); n(StepCon); }
 S(lex_semi  ) { Step n = (in[pos++] == ';' ? and : or); n(StepCon); }
 S((*_[])) = { 
-  ['1'] = lex_1,
-  ['2'] = lex_2,
-  ['3'] = lex_3,
-  ['('] = lex_op,
-  [')'] = lex_cp,
-  ['+'] = lex_plus,
-  ['-'] = lex_minus,
-  ['!'] = lex_bang,
-  ['*'] = lex_mul,
-  ['/'] = lex_div,
+  ['1'] = lex_1, ['2'] = lex_2,
+  ['3'] = lex_3, ['('] = lex_op,
+  [')'] = lex_cp, ['+'] = lex_plus,
+  ['-'] = lex_minus, ['!'] = lex_bang,
+  ['*'] = lex_mul, ['/'] = lex_div,
   [';'] = lex_semi,
 };
 #include "programmer.h"
@@ -71,8 +66,15 @@ D(additive,       3, multiplicative, A)D(A,
                   3, additive, 2, _['-'], 3, multiplicative, not)
 D(expression,     3, additive, not)
 D(expression_stm, 3, expression, 2, _[';'], not)
-// below is stack hungry algorithm capable of executing any form of
-// grammar directly rooted in host language.
+// below is choice machine algorith
+// which runs grammar and runs
+// actions too.
+// lets imagine root/grammar
+// namespace which can evolution
+// in time as one bounded set and
+// actions namespace as
+// crown/growing branches and
+// furits
 S(reTurn) { return (void)0; }
 S((*Red_descend_steps[]));
 S((*Yellow_descend_steps[]));
