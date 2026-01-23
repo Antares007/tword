@@ -19,14 +19,14 @@ S(unit18_1) { static Step v[] = {unit18_2, Sa};     gram = (Sac){v}, o.c[3](Step
 S(unit18  ) { static Step v[] = {unit18_1, not};    gram = (Sac){v}, o.c[1](StepCon); }
 S(Sa_1    ) { static Step v[] = {unit18,   b};      gram = (Sac){v}, o.c[2](StepCon); }
 S(Sa      ) { static Step v[] = {Sa_1,     unit18}; gram = (Sac){v}, o.c[1](StepCon); }
-S(expression_stm);
+S(expression);
 S(gram);
 S((*srart));
 extern int printf (const char *__restrict __format, ...);
 S(accept) { printf("true in: %s pos: %d\n", in, pos); }
 int main() {
   gram((Sac){(Step[]){accept, Sa}},             (Sac){0}, 0, "baaaaaa",  0);
-  gram((Sac){(Step[]){accept, expression_stm}}, (Sac){0}, 0, "(1+2)*3;", 0);
+  gram((Sac){(Step[]){accept, expression}},     (Sac){0}, 0, "(1+2)*3", 0);
 } 
 S(lex_1     ) { Step n = (in[pos++] == '1' ? and : or); n(StepCon); }
 S(lex_2     ) { Step n = (in[pos++] == '2' ? and : or); n(StepCon); }
@@ -86,7 +86,7 @@ S((*Blue_walk_steps[]));
 S((*Blue_NotAndOr_steps[]));
 S(Blue_not) {
   Step c = s->gram.c[0];
-  if      (s->color == Yellow) return o = (Sac){Blue_walk_steps},  s = s->upper, c(StepCon);
+  if      (s->color == Yellow)        o = (Sac){Blue_walk_steps},  s = s->upper, c(StepCon);
   else if (s->color == Blue)          o = (Sac){Blue_walk_steps},  s = s->upper, c(StepCon);
   else                                o = (Sac){Green_walk_steps}, s = s->upper, c(StepCon);
 }
@@ -98,6 +98,7 @@ S((*Blue_NotAndOr_steps[])) = {
 };
 S(Blue_dot) {
   Blue_not(StepCon);
+  if      (s->color == Yellow) return;
   o = (Sac){Yellow_descend_steps}, s->gram.c[1](StepCon);
 }
 S(Blue_walk_dispatch) {
