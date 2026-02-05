@@ -41,68 +41,75 @@ S(Green_0); S(Green_2); S(Green_3);
 S(Blue_0); S(Blue_2); S(Blue_3);
 S(bktrk) {}
 
+#define Red_walk        Red_0,   Red_0,    Green_2, Red_3
+#define Red_descend     bktrk,   Red_1,    Green_2, Red_3
+#define Yellow_walk     bktrk,   bktrk,    bktrk,   Yellow_3
+#define Yellow_descend  bktrk,   Yellow_1, bktrk,   Yellow_3
+#define Green_walk      Green_0, Green_0,  Green_2, Green_3
+#define Blue_walk       Blue_0,  Blue_0,   Blue_2,  Blue_3
+
 S(gram) {
-  ((s_t)rdi)(bktrk, Red_1, Green_2, Red_3, &(ray_t){rdi, rsi, r8, Pink}, r9);
+  ((s_t)rdi)(Red_descend, &(ray_t){rdi, rsi, r8, Pink}, r9);
 }
 
 S(Red_1) {
-  ((s_t)rdi)(Red_0, Red_0, Green_2, Red_3, r8, r9);
-  ((s_t)rsi)(bktrk, Red_1, Green_2, Red_3, r8, r9);
+  ((s_t)rdi)(Red_walk, r8, r9);
+  ((s_t)rsi)(Red_descend, r8, r9);
 }
 S(Red_0) {
-  if (r8->color == Red) r8->rsi(Red_0, Red_0, Green_2, Red_3, r8->r8, r9);
-  else if (r8->color == Blue) r8->rsi(Blue_0, Blue_0, Blue_2, Blue_3, r8->r8, r9);
-  else r8->rsi(Green_0, Green_0, Green_2, Green_3, r8->r8, r9);
+  if (r8->color == Red) r8->rsi(Red_walk, r8->r8, r9);
+  else if (r8->color == Blue) r8->rsi(Blue_walk, r8->r8, r9);
+  else r8->rsi(Green_walk, r8->r8, r9);
 }
 S(Red_3) {
   ray_t *d = r8;
   while (1) {
     if (d->rdi == rdi) return bktrk(Context);
     if (d->color != Red)
-      return ((s_t)rdi)(bktrk, Red_1, Green_2, Red_3, &(ray_t){rdi, rsi, r8, Red}, r9);
+      return ((s_t)rdi)(Red_descend, &(ray_t){rdi, rsi, r8, Red}, r9);
     d = d->r8;
   }
 }
 S(Yellow_1) {
-  ((s_t)rdi)(bktrk, bktrk, bktrk, Yellow_3, r8, r9);
-  ((s_t)rsi)(bktrk, Yellow_1, bktrk, Yellow_3, r8, r9);
+  ((s_t)rdi)(Yellow_walk, r8, r9);
+  ((s_t)rsi)(Yellow_descend, r8, r9);
 }
 S(Yellow_3) {
   ray_t *d = r8;
   for (; d->color == Yellow; d = d->r8) if (d->rdi == rdi) return bktrk(Context);
-  if (d->rdi == rdi) ((s_t)rsi)(Blue_0, Blue_0, Blue_2, Blue_3, r8, r9);
-  else ((s_t)rdi)(bktrk, Yellow_1, bktrk, Yellow_3, &(ray_t){rdi, rsi, r8, Yellow}, r9);
+  if (d->rdi == rdi) ((s_t)rsi)(Blue_walk, r8, r9);
+  else ((s_t)rdi)(Yellow_descend, &(ray_t){rdi, rsi, r8, Yellow}, r9);
 }
 S(Green_not) {
   if (r8->color == Blue)
-    r8->rsi(Blue_0, Blue_0, Blue_2, Blue_3, r8->r8, r9);
-  else r8->rsi(Green_0, Green_0, Green_2, Green_3, r8->r8, r9);
+    r8->rsi(Blue_walk, r8->r8, r9);
+  else r8->rsi(Green_walk, r8->r8, r9);
 }
-S(Green_and) { ((s_t)rcx)(Green_0, Green_0, Green_2, Green_3, r8, r9); }
+S(Green_and) { ((s_t)rcx)(Green_walk, r8, r9); }
 S(Green_0) {
   Green_not(Context);
-  ((s_t)r8->rdi)(bktrk, Yellow_1, bktrk, Yellow_3, r8, r9);
+  ((s_t)r8->rdi)(Yellow_descend, r8, r9);
 }
 S(Green_2) { ((s_t)rdi)(Green_not, Green_and, bktrk, rsi, r8, r9); }
 S(Green_3) {
-  ((s_t)rdi)(bktrk, Red_1, Green_2, Red_3, &(ray_t){rdi, rsi, r8, Green}, r9);
+  ((s_t)rdi)(Red_descend, &(ray_t){rdi, rsi, r8, Green}, r9);
 }
 S(Blue_not) {
   if (r8->color == Yellow || r8->color == Blue)
-    ((s_t)r8->rsi)(Blue_0, Blue_0, Blue_2, Blue_3, r8->r8, r9);
-  else ((s_t)r8->rsi)(Green_0, Green_0, Green_2, Green_3, r8->r8, r9);
+    ((s_t)r8->rsi)(Blue_walk, r8->r8, r9);
+  else ((s_t)r8->rsi)(Green_walk, r8->r8, r9);
 }
 S(Blue_and) {
-  ((s_t)rcx)(Blue_0, Blue_0, Blue_2, Blue_3, r8, r9);
+  ((s_t)rcx)(Blue_walk, r8, r9);
 }
 S(Blue_0) {
   Blue_not(Context);
   if (r8->color == Yellow) return bktrk(Context);
-  ((s_t)r8->rdi)(bktrk, Yellow_1, bktrk, Yellow_3, r8, r9);
+  ((s_t)r8->rdi)(Yellow_descend, r8, r9);
 }
 S(Blue_2) {
   ((s_t)rdi)(Blue_not, Blue_and, bktrk, rsi, r8, r9);
 }
 S(Blue_3) {
-  ((s_t)rdi)(bktrk, Red_1, Green_2, Red_3, &(ray_t){rdi, rsi, r8, Blue}, r9);
+  ((s_t)rdi)(Red_descend, &(ray_t){rdi, rsi, r8, Blue}, r9);
 }
