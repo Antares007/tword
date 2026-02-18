@@ -35,18 +35,19 @@ S(accept) {
 }
 int main() { gram(S0, accept, 0, 0, 0, 0); }
 
-S(Red_1); S(Red_0); S(Red_3);
-S(Yellow_1); S(Yellow_3);
-S(Green_0); S(Green_2); S(Green_3);
-S(Blue_0); S(Blue_2); S(Blue_3);
+S(Red_1);     S(Red_0);   S(Red_3);
+S(Yellow_1);  S(Yellow_3);
+S(Green_0);   S(Green_2); S(Green_3);
+S(Blue_0);    S(Blue_2);  S(Blue_3);
 S(bktrk) {}
 
-#define Red_walk        Red_0,   Red_0,    Green_2, Red_3
-#define Red_descend     bktrk,   Red_1,    Green_2, Red_3
-#define Yellow_walk     bktrk,   bktrk,    bktrk,   Yellow_3
-#define Yellow_descend  bktrk,   Yellow_1, bktrk,   Yellow_3
-#define Green_walk      Green_0, Green_0,  Green_2, Green_3
-#define Blue_walk       Blue_0,  Blue_0,   Blue_2,  Blue_3
+//Crafting elegant solutions through relentless problem-solving.
+#define Red_walk        Red_0,    Red_0,    Green_2,  Red_3
+#define Red_descend     bktrk,    Red_1,    Green_2,  Red_3
+#define Yellow_walk     bktrk,    bktrk,    bktrk,    Yellow_3
+#define Yellow_descend  bktrk,    Yellow_1, bktrk,    Yellow_3
+#define Green_walk      Green_0,  Green_0,  Green_2,  Green_3
+#define Blue_walk       Blue_0,   Blue_0,   Blue_2,   Blue_3
 
 S(gram) {
   ((s_t)rdi)(Red_descend, &(ray_t){rdi, rsi, r8, Pink}, r9);
