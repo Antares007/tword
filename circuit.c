@@ -1,18 +1,22 @@
 #define S(name)
 #define OP1(next, opcode, unit, name)               \
-  name@{ shape: circle, label: #name } -.-> next;   \
-  name@{ shape: circle, label: #name } ---> unit;
+  name@{ shape: stadium, label: #name } -.-> next;  \
+  name@{ shape: stadium, label: #name } ---> unit;
 #define OP2(next, opcode, unit, name)               \
-  name@{ shape: subproc, label: #name } -.-> next;  \
-  name@{ shape: subproc, label: #name } ---> unit;
+  name@{ shape: rect, label: #name } -.-> next;   \
+  name@{ shape: rect, label: #name } ---> unit;   \
+  unit@{ shape: subprocess, label: #unit } ---> next;   
 #define OP3(next, opcode, unit, name)               \
-  name@{ shape: tri, label: #name } -.-> next;      \
-  name@{ shape: tri, label: #name } ---> unit;
+  name@{ shape: trap-t, label: #name } -.-> next;   \
+  name@{ shape: trap-t, label: #name } ---> unit;
+
 #define Δ_(next, opcode, unit, name) OP##opcode(next, opcode, unit, name)
 #define Δ(...) Δ_(__VA_ARGS__)
 
 #include "programmer.h"
 
+//D(Sa, 2, b,        A)D(A,
+//      3, Sa, 2, a, End)
 D(constant,       2, lex_1, A)D(A,
                   2, lex_2, A)D(A,
                   2, lex_3, not);
