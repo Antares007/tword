@@ -19,21 +19,38 @@ void c0p(ρ);
 C(0, 9, 8) C(9, 8, 7) C(8, 7, 6) C(7, 6, 5) C(6, 5, 4)
 C(5, 4, 3) C(4, 3, 2) C(3, 2, 1) C(2, 1, 0) C(1, 0, 9)
 
-#include<stdio.h>
-#include<unistd.h>
+#define GOTO(n)                                 \
+  void n(ω l, char s, ω r);                     \
+  void goto_##n(ξ locus) { locus.step((ρ){n}); }
+GOTO(s1) GOTO(s2) GOTO(s3) GOTO(s4) GOTO(s5)
 
-void head(ω l, char v, ω r);
-
-void move(ξ cell) { cell.step((ρ){head}); }
-
-void head(ω l, char v, ω r) {
-  printf("%c\n", v++),
-    usleep(20000),
-      l.step(v >= 127 ? '0' : v, (δ){move});
+void s5(ω l, char s, ω r) {
+  if (s - '0') l.step('1', (δ){goto_s5});
+  else         r.step('1', (δ){goto_s1});
+}
+void s4(ω l, char s, ω r) {
+  if (s - '0') l.step('1', (δ){goto_s4});
+  else         l.step('0', (δ){goto_s5});
+}
+void s3(ω l, char s, ω r) {
+  if (s - '0') r.step('1', (δ){goto_s3});
+  else         l.step('1', (δ){goto_s4});
+}
+void s2(ω l, char s, ω r) {
+  if (s - '0') r.step('1', (δ){goto_s2});
+  else         r.step('0', (δ){goto_s3});
+}
+void s1(ω l, char s, ω r) {
+  if (s - '0') r.step('0', (δ){goto_s2});
 }
 
-int main() {
-  c0 = '4', c1 = '6', c2 = '1', c3 = '2', c4 = '3',
-  c5 = '5', c6 = '1', c7 = '2', c8 = '3', c9 = '0',
-  c0p((ρ){head});
+#include<stdio.h>
+int main()
+{
+  c9='1', c8='1', c7='1', c6='0',
+  c5='0', c4='0', c3='0', c2='0',
+  c1='0', c0='0';
+  printf("%c%c%c%c%c%c%c%c%c%c\n",c9,c8,c7,c6,c5,c4,c3,c2,c1,c0);
+  c9p((ρ){s1});
+  printf("%c%c%c%c%c%c%c%c%c%c\n",c9,c8,c7,c6,c5,c4,c3,c2,c1,c0);
 }
