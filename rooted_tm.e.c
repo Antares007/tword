@@ -6,7 +6,6 @@ struct ρ { void (*step)(ω, char, ω); };
 struct ξ { void (*step)(ρ); };
 struct ω { void (*step)(char, δ); };
 struct δ { void (*step)(ξ); };
-
 void c0p(ρ);
 void c8p(ρ);
 char c9 = 0;
@@ -59,15 +58,41 @@ void c0l(char s, δ move) { c0 = s, move.step((ξ){c1p}); }
 void c0r(char s, δ move) { c0 = s, move.step((ξ){c9p}); }
 void c0p(ρ read) { read.step((ω){c0l}, c0, (ω){c0r}); }
 
-void head(ω l, char v, ω r);
-void move(ξ cell) { cell.step((ρ){head}); }
+void s1(ω l, char s, ω r);
+void goto_s1(ξ locus) { locus.step((ρ){s1}); }
+void s2(ω l, char s, ω r);
+void goto_s2(ξ locus) { locus.step((ρ){s2}); }
+void s3(ω l, char s, ω r);
+void goto_s3(ξ locus) { locus.step((ρ){s3}); }
+void s4(ω l, char s, ω r);
+void goto_s4(ξ locus) { locus.step((ρ){s4}); }
+void s5(ω l, char s, ω r);
+void goto_s5(ξ locus) { locus.step((ρ){s5}); }
 
-#include <stdio.h>
-#include <unistd.h>
-void head(ω l, char v, ω r) {
-  printf("%c\n", v++), usleep(20000), l.step(v >= 127 ? '0' : v, (δ){move});
+void s5(ω l, char s, ω r) {
+  if (s - '0') l.step('1', (δ){goto_s5});
+  else         r.step('1', (δ){goto_s1});
 }
+void s4(ω l, char s, ω r) {
+  if (s - '0') l.step('1', (δ){goto_s4});
+  else         l.step('0', (δ){goto_s5});
+}
+void s3(ω l, char s, ω r) {
+  if (s - '0') r.step('1', (δ){goto_s3});
+  else         l.step('1', (δ){goto_s4});
+}
+void s2(ω l, char s, ω r) {
+  if (s - '0') r.step('1', (δ){goto_s2});
+  else         r.step('0', (δ){goto_s3});
+}
+void s1(ω l, char s, ω r) {
+  if (s - '0') r.step('0', (δ){goto_s2});
+}
+extern int printf(const char *restrict __format, ...);
 int main() {
-  c0 = '4', c1 = '6', c2 = '1', c3 = '2', c4 = '3', c5 = '5', c6 = '1',
-  c7 = '2', c8 = '3', c9 = '0', c0p((ρ){head});
+  c9 = '1', c8 = '1', c7 = '1', c6 = '0', c5 = '0', c4 = '0', c3 = '0',
+  c2 = '0', c1 = '0', c0 = '0';
+  printf("%c%c%c%c%c%c%c%c%c%c\n", c9, c8, c7, c6, c5, c4, c3, c2, c1, c0);
+  c9p((ρ){s1});
+  printf("%c%c%c%c%c%c%c%c%c%c\n", c9, c8, c7, c6, c5, c4, c3, c2, c1, c0);
 }

@@ -44,7 +44,7 @@ void s1(ω l, char s, ω r) {
   if (s - '0') r.step('0', (δ){goto_s2});
 }
 
-#include<stdio.h>
+extern int printf(const char *restrict __format, ...);
 int main()
 {
   c9='1', c8='1', c7='1', c6='0',
