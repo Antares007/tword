@@ -1,62 +1,19 @@
-### Grammar Machine: Two Poles of Programming
+# Every jmp, no ret: eliminating the return address attack surface by construction
 
-## Problem
+The ROP attack vulnerability surface is the implicit "what happens next." Typed tail-recursive steps make "what happens next" explicit in the type, so there's nothing left to corrupt.
 
-A tree does not grow without roots.
+When we force our thinking to solve the problem with only a typed, void, tail-recursive function, essentially with typed steps, we will get a circuit-like, organically grown control flow graph.
 
-In most machine languages, the control flow of *language rules*
-(grammar, interpretation) is entangled with the control flow of *actions*
-(effects, execution).
+To preserve natural structure (modularity, composability, scalability, and encapsulation), pass only flat values and typed step pointers.
 
-As languages evolve, this entanglement grows:
-small and cute at first,
-then expanded into incidental state and committee-approved control flow,
-owned by a few.
+In the example, the observer ρ receives a state and an instruction set containing two options: left ω and right ω.
 
-The reason is simple:
-the evolution of roots (rules) and actions is coupled.
+Essentially, the observer ρ receives the state and possible continuations offered by the state locus ξ.
 
-## Road to a Solution
+So, state locus ξ is a typed ambiguous step, i.e., it carries forward more than one possible continuation.
 
-Today, at the level of execution, all computing paradigms can be logically boiled down to a “one linear stack managed return-value oriented composition paradigm.”
+Ambiguity can be composed, for example, between two abstract ambiguous steps, Yin and Yang:
 
-The execution goes step by step, followed by a predefined continuation. After the instructions' core operation, the next step is the *fetch_decode_execute(PC)* step.
+Yin defines admissible continuations and selects one defined by Yang. Yang's chosen continuation defines its admissible continuations and chooses one defined by Yin.
 
-“nop” instruction will add its width value to the program counter to calculate the next PC.
-
-“ret” instruction within its core operation will pop PC from the stack.
-
-“if” and others will do something similar to resolve ambiguity locally,
-
-But “div” is different; it chooses to resolve ambiguity differently. It depends on the globally defined structural invariant within the machine. i.e., the machine defines possible continuations within its bounds.
-
-We can propose that a step is a machine, and a machine is a step to define ambigious step.
-
-An ambiguous step defines the bounded space of admissible continuations, i.e. machine.
-
-Ambiguity is a structure, not an error, and it is composable within the Step by resolving or carrying it forward.
-
-We can directly specify the copy operator (https://github.com/Antares007/t-machine/blob/main/godel_copy.c) into machines controll flow graph, i.e., in the systems language without tables/data. “s1”, “s2”, …, “s5” are ambiguous steps, tiny machines, and are using data (o-tape, s-head) to choose. They are defining admissible continuations and, at the same time, are primary choosers.
-
-We can go further and create more sophisticated (https://github.com/Antares007/tword) examples to divide ambiguous systems, such as grammar.
-
-We can have grammar rules defined as tail recursive controll flow graphs directly rooted in the system's language and define a traversal algorithm as separatly evolutionable control flow graph too.
-
-We can kick-start the dancing process as:
-
-The A step defines admissible continuations and chooses one defined by the B step. The chosen continuation of the B step will define its admissible continuations and will choose the continuation defined by the A step.
-
-I’am self tought programmer lack language of academic reasoning.
-
-I’am more like a monkey on a tree, learning primarily from nature, but the division of amoeba seems to me like a split of one diagonal linear logic into orthogonal spaces, with the possibility of having many lines of logic.
-
-So all of you greats, grounded in the soil of math, HELP.
-
-## Choice Machine
-
-The algorithm handles any grammar,
-including direct and indirect left recursion.
-
-Left recursion becomes tail recursion by construction.
-
-![](./ss_225.png)
+We can invite other roles to grow the terrain of more sophisticated interactions.
