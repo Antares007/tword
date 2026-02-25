@@ -93,24 +93,22 @@ This is what "no attack surface" looks like in assembly:
 
 ## Security
 
-Type is security. We need not verify the whole control flow graph each time,
-only the type of the machine we want to interact with. Typed machines can be
-compiled separately and composed structurally.
+Type is security; we don't need to check the whole control flow graph/circuit every time,
+only the type of machine we want to interact with.
 
-In practice, each cell lays out in binary as a structured type:
+In practice, it means we can have compiled typed machines separately. We can enforce a structural
+invariant for each cell to lay out in binary like a structured type, i.e., `ωξω,ωξω,ωξω,ωξω,...ωξω`.
+That is a crystallized/hashable form of the 10-cell circular tape machine.
+We can index into it as a universal interface.
 
-```
-ωξω, ωξω, ωξω, ... ωξω
-```
+By structurally aligning and composing little machines, we can have a binary hash of richer
+operational semantics, preserving universal interface.
 
-This is the crystallized, hashable form of the circular tape machine.
-Index into it as a universal interface. By structurally aligning and composing
-small machines, you get a binary hash of richer operational semantics while
-preserving that universal interface.
+Compilers need to align with the new reality; To produce typed machine binaries with
+a guaranteed universal interface.
 
-Compilers need to align with this reality: produce typed machine binaries with
-a guaranteed universal interface. How typed machine output changes the compilation
-pipeline and grows operational semantics is the most engaging road ahead.
+How will produced typed machines change the compilation pipeline and growth of
+operational semantics, that is, the most engaging road to explore.
 
 ## Status
 
