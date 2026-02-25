@@ -83,17 +83,151 @@
     .wrapper { cursor: pointer; user-select: none; position: relative; }
     .wrapper > span + span { margin-left: .4rem; }
     `;s.appendChild(a)}i(t,e){this.dispatchEvent(new CustomEvent(t,{bubbles:true,composed:true,detail:e}))}}customElements.define("dark-mode",a);</script><div style="max-width: 960px; margin: 0 auto 60px auto; padding: 8px;max-width: 960px;" class="markdown-style" mode="light">
-    <h1 id="rop-attack-vulnerability-share-a-root-typed-tail-recursive-steps-close-the-gap"><a class="anchor" aria-hidden="true" tabindex="-1" href="#rop-attack-vulnerability-share-a-root-typed-tail-recursive-steps-close-the-gap"><span class="octicon octicon-link"></span></a>ROP attack vulnerability share a root, typed tail-recursive steps close the gap</h1>
-    <p>Yes, ROP and paradigm vulnerability share a root.</p>
-    <p>The attack surface is the implicit "what happens next." Typed tail-recursive steps make "what happens next" explicit in the type, so there's nothing left to corrupt.</p>
-    <p>When we force our thinking to solve the problem with only a typed, void, tail-recursive function, essentially with typed steps, we will get a <a href="https://gist.github.com/Antares007/ca25e91e3fa340fc74b517a18f193902">circuit-like</a>, organically grown control flow graph.</p>
-    <p>To preserve natural structure (modularity, composability, scalability, and encapsulation), pass only flat values and typed step pointers.</p>
-    <p>In the <a href="https://github.com/Antares007/tword/blob/7aa3731bb1bd5931dcc29c97bf0f6cbf9c125acb/rooted_tm.e.c">example</a>, the observer ρ receives a state and an instruction set containing two options: left ω and right ω.</p>
-    <p>Essentially, the observer ρ receives the state and possible continuations offered by the state locus ξ.</p>
-    <p>So, state locus ξ is a typed ambiguous step, i.e., it carries forward more than one possible continuation.</p>
-    <p>Ambiguity can be composed, for example, between two abstract ambiguous steps, Yin and Yang:</p>
+    <h1 id="in-the-beginning-was-the-step-typed-semantics"><a class="anchor" aria-hidden="true" tabindex="-1" href="#in-the-beginning-was-the-step-typed-semantics"><span class="octicon octicon-link"></span></a>In the Beginning Was the Step: Typed Semantics</h1>
+    <h2 id="before-the-word"><a class="anchor" aria-hidden="true" tabindex="-1" href="#before-the-word"><span class="octicon octicon-link"></span></a>Before the Word</h2>
+    <p>Before the word, there was the wire.</p>
+    <p>Before the language, there was the circuit.</p>
+    <p>Before the abstraction, there was the substrate — running, stepping, transitioning, enforcing — with zero overhead, because it was the ground and not an implementation on top of the ground.</p>
+    <p>We arrived late. We named what was already happening. We called it computation.</p>
+    <p>And then we made a mistake that has cost us fifty years: we defined computation by its description rather than by its substance. We built languages to talk about steps instead of building steps themselves. We wrote programs that described what should happen instead of being what should happen.</p>
+    <p>The gap between description and substance is where every bug lives.</p>
+    <p>The step is the way to close it.</p>
+    <h2 id="what-a-step-is"><a class="anchor" aria-hidden="true" tabindex="-1" href="#what-a-step-is"><span class="octicon octicon-link"></span></a>What a Step Is</h2>
+    <p>A step is the smallest unit of computation that carries its own meaning forward.</p>
+    <p>A function that returns a value is a description of a transformation. It takes input, produces output, and terminates. The continuation — what happens next — lives outside the function, in the caller, in the stack, in the implicit protocol of the execution model.</p>
+    <p>A step carries the continuation inside its type. It does not terminate. It hands control forward to the next typed machine. The "what happens next" is explicit, typed, and enforced at compile time.</p>
+    <p>The difference is the difference between a message and a wire.</p>
+    <p>A message describes what should flow. A wire enforces what can flow. Physics builds with wires. We built with messages. And every message that arrives at the wrong receiver, with the wrong type, at the wrong time, is a bug.</p>
+    <p>The step is the wire. The type is the wire. The circuit is the program.</p>
+    <h2 id="the-substrate-speaks-first"><a class="anchor" aria-hidden="true" tabindex="-1" href="#the-substrate-speaks-first"><span class="octicon octicon-link"></span></a>The Substrate Speaks First</h2>
+    <p>Physics is the original type system.</p>
+    <p>A floating-point register cannot receive an integer instruction. This is not a rule. There is no documentation to read, no convention to follow, no discipline to maintain. The circuit will not allow it. The type is the wire, and the wire is physics.</p>
+    <p>Hardware operational semantics are specified by construction. The CPU does not approximate its behavior. It instantiates it. Specification and realization are the same act. The CPU is its own proof.</p>
+    <p>This is what zero overhead means. The substrate does not pay the cost of translation between what it says and what it does. There is no translation. The substrate is the behavior.</p>
+    <p>When we build software, we translate. We write a description, compile it into another description, link it into yet another description, and finally load it into a substrate that has been running all along, waiting for us to catch up.</p>
+    <p>Every layer of translation is overhead. Every layer of translation is a gap where the description can diverge from the substrate. Every divergence is a potential bug.</p>
+    <p>The direction of growth is from the substrate upward. Grow the semantics. Close the gap. The perfect program is physics — not because we will reach it, but because it is the direction.</p>
+    <h2 id="four-types-one-circuit"><a class="anchor" aria-hidden="true" tabindex="-1" href="#four-types-one-circuit"><span class="octicon octicon-link"></span></a>Four Types, One Circuit</h2>
+    <p>The Turing machine is the proof of concept.</p>
+    <pre class="language-c"><code class="language-c code-highlight"><span class="code-line line-number" line="1"><span class="token keyword">typedef</span> <span class="token keyword">struct</span> ξ ξ<span class="token punctuation">;</span>
+</span><span class="code-line line-number" line="2"><span class="token keyword">typedef</span> <span class="token keyword">struct</span> ρ ρ<span class="token punctuation">;</span>
+</span><span class="code-line line-number" line="3"><span class="token keyword">typedef</span> <span class="token keyword">struct</span> ω ω<span class="token punctuation">;</span>
+</span><span class="code-line line-number" line="4"><span class="token keyword">typedef</span> <span class="token keyword">struct</span> δ δ<span class="token punctuation">;</span>
+</span><span class="code-line line-number" line="5"><span class="token keyword">struct</span> ρ <span class="token punctuation">{</span> <span class="token keyword">void</span> <span class="token punctuation">(</span><span class="token operator">*</span>step<span class="token punctuation">)</span><span class="token punctuation">(</span>ω<span class="token punctuation">,</span> <span class="token keyword">char</span><span class="token punctuation">,</span> ω<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>  <span class="token comment">// read:  receives left writer, symbol, right writer</span>
+</span><span class="code-line line-number" line="6"><span class="token keyword">struct</span> ξ <span class="token punctuation">{</span> <span class="token keyword">void</span> <span class="token punctuation">(</span><span class="token operator">*</span>step<span class="token punctuation">)</span><span class="token punctuation">(</span>ρ<span class="token punctuation">)</span><span class="token punctuation">;</span>          <span class="token punctuation">}</span><span class="token punctuation">;</span>  <span class="token comment">// cell:  offers itself to an observer</span>
+</span><span class="code-line line-number" line="7"><span class="token keyword">struct</span> ω <span class="token punctuation">{</span> <span class="token keyword">void</span> <span class="token punctuation">(</span><span class="token operator">*</span>step<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">char</span><span class="token punctuation">,</span> δ<span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token punctuation">}</span><span class="token punctuation">;</span>  <span class="token comment">// write: receives symbol and move direction</span>
+</span><span class="code-line line-number" line="8"><span class="token keyword">struct</span> δ <span class="token punctuation">{</span> <span class="token keyword">void</span> <span class="token punctuation">(</span><span class="token operator">*</span>step<span class="token punctuation">)</span><span class="token punctuation">(</span>ξ<span class="token punctuation">)</span><span class="token punctuation">;</span>          <span class="token punctuation">}</span><span class="token punctuation">;</span>  <span class="token comment">// move:  receives next cell</span>
+</span></code><div onclick="copied(this)" data-code="typedef struct ξ ξ;
+typedef struct ρ ρ;
+typedef struct ω ω;
+typedef struct δ δ;
+struct ρ { void (*step)(ω, char, ω); };  // read:  receives left writer, symbol, right writer
+struct ξ { void (*step)(ρ);          };  // cell:  offers itself to an observer
+struct ω { void (*step)(char, δ);    };  // write: receives symbol and move direction
+struct δ { void (*step)(ξ);          };  // move:  receives next cell
+" class="copied"><svg class="octicon-copy" aria-hidden="true" viewBox="0 0 16 16" fill="currentColor" height="12" width="12"><path fill-rule="evenodd" d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"></path><path fill-rule="evenodd" d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"></path></svg><svg class="octicon-check" aria-hidden="true" viewBox="0 0 16 16" fill="currentColor" height="12" width="12"><path fill-rule="evenodd" d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"></path></svg></div></pre>
+    <p>Four types. Four roles. The entire computational substrate of a universal machine specified in sixteen lines of C.</p>
+    <p>Read the types as a circuit diagram:</p>
+    <pre><code class="code-highlight"><span class="code-line line-number" line="1">ξ → ρ → ω → δ → ξ
+</span></code><div onclick="copied(this)" data-code="ξ → ρ → ω → δ → ξ
+" class="copied"><svg class="octicon-copy" aria-hidden="true" viewBox="0 0 16 16" fill="currentColor" height="12" width="12"><path fill-rule="evenodd" d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"></path><path fill-rule="evenodd" d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"></path></svg><svg class="octicon-check" aria-hidden="true" viewBox="0 0 16 16" fill="currentColor" height="12" width="12"><path fill-rule="evenodd" d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"></path></svg></div></pre>
+    <p>The cell offers itself to be read. The observer reads the cell, receives the current symbol and two continuations — left and right. The writer receives a new symbol and a direction. The mover receives the next cell and the cycle begins again.</p>
+    <p>Every valid transition is explicit in the type. The circuit has no implicit "what happens next." The return address does not exist. The stack to corrupt does not exist. The untyped continuation that ROP exploits does not exist.</p>
+    <p>The assembly confirms it:</p>
+    <pre><code class="language-asm code-highlight"><span class="code-line line-number" line="1">c9l:
+</span><span class="code-line line-number" line="2">    mov byte ptr [rip + c9], di
+</span><span class="code-line line-number" line="3">    lea rdi, [rip + c0p]
+</span><span class="code-line line-number" line="4">    jmp rsi
+</span><span class="code-line line-number" line="5">
+</span><span class="code-line line-number" line="6">c0p:
+</span><span class="code-line line-number" line="7">    mov rax, rdi
+</span><span class="code-line line-number" line="8">    movsx esi, byte ptr [rip + c0]
+</span><span class="code-line line-number" line="9">    lea rdi, [rip + c0l]
+</span><span class="code-line line-number" line="10">    lea rdx, [rip + c0r]
+</span><span class="code-line line-number" line="11">    jmp rax
+</span></code><div onclick="copied(this)" data-code="c9l:
+    mov byte ptr [rip + c9], di
+    lea rdi, [rip + c0p]
+    jmp rsi
+
+c0p:
+    mov rax, rdi
+    movsx esi, byte ptr [rip + c0]
+    lea rdi, [rip + c0l]
+    lea rdx, [rip + c0r]
+    jmp rax
+" class="copied"><svg class="octicon-copy" aria-hidden="true" viewBox="0 0 16 16" fill="currentColor" height="12" width="12"><path fill-rule="evenodd" d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"></path><path fill-rule="evenodd" d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"></path></svg><svg class="octicon-check" aria-hidden="true" viewBox="0 0 16 16" fill="currentColor" height="12" width="12"><path fill-rule="evenodd" d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"></path></svg></div></pre>
+    <p>Every function ends in <code>jmp</code>. The compiler eliminated every stack frame because there was nothing to return to. The typed steps are the control flow. The control flow is the type. The type is the wire.</p>
+    <p>This is what typed semantics looks like when it reaches the substrate.</p>
+    <h2 id="the-observer-and-the-locus"><a class="anchor" aria-hidden="true" tabindex="-1" href="#the-observer-and-the-locus"><span class="octicon octicon-link"></span></a>The Observer and the Locus</h2>
+    <p>The cell ξ is more than a memory location. It is a typed ambiguous step.</p>
+    <p>When the observer ρ reads the cell, it receives the current symbol and two possible continuations — left and right. The cell does not tell the observer what to do. The cell offers what is admissible. The observer chooses based on its own state.</p>
+    <p>The cell is the state locus: the point in the circuit where multiple continuations are possible, where the machine carries ambiguity forward rather than resolving it prematurely.</p>
+    <p>This is the foundational insight of typed semantics: ambiguity is structure.</p>
+    <p>A function that returns a value resolves ambiguity by collapsing it. There is one return value. The caller decides what to do with it. The decision is made outside the typed system, in code that the type system cannot reason about.</p>
+    <p>A typed step preserves ambiguity in the type. The state locus carries multiple possible continuations. Each continuation is typed. Each is admissible. The choice is made by the next typed machine, inside the typed system, where the type system can reason about it.</p>
+    <p>The circuit is richer for the ambiguity. The type system is stronger for encoding it.</p>
+    <h2 id="yin-yang-and-the-geometry-of-composition"><a class="anchor" aria-hidden="true" tabindex="-1" href="#yin-yang-and-the-geometry-of-composition"><span class="octicon octicon-link"></span></a>Yin, Yang, and the Geometry of Composition</h2>
+    <p>Ambiguity composes.</p>
+    <p>Two abstract ambiguous steps — call them Yin and Yang:</p>
     <p>Yin defines admissible continuations and selects one defined by Yang. Yang's chosen continuation defines its admissible continuations and chooses one defined by Yin.</p>
-    <p>We can invite other roles to grow the <a href="https://github.com/Antares007/tword/blob/7191552c2df59d785ce3fc67f8f038f1fcd80b33/ss_300.png">terrain</a> of more sophisticated interactions.</p>
+    <p>This is not a metaphor for balance. This is a formal description of how two machines negotiate a shared computation. Each machine constrains the other's choice space. Each machine's output is the other machine's input. The computation lives in the dialogue between them.</p>
+    <p>Samson Abramsky and Radha Jagadeesan formalized this structure in game semantics: computation as a game between Opponent and Proponent. Opponent defines the admissible moves. Proponent responds. The response constrains the next round of admissible moves. The game is the computation.</p>
+    <p>We arrived at the same structure from hardware intuition, from typed steps, from the circuit diagram. Different path, same ground.</p>
+    <p>The Yin/Yang composition is not a special case. It is the general pattern. Any two typed machines can be composed this way. The composition is typed. The interface is enforced. The circuit grows.</p>
+    <p>We can invite other roles into the composition. Grammar defines what sequences are admissible. Traversal defines how to walk them. Actions define what to do at each node. Three separate typed machines, each evolving in its own layer, each composable with the others by typed interface.</p>
+    <p>The parser is not a monolithic control flow graph. The parser is three machines plugged together. Change the traversal and the grammar remains. Change the grammar and the actions remain. Each machine grows independently. Each interface is preserved.</p>
+    <h2 id="operational-semantics-as-growth"><a class="anchor" aria-hidden="true" tabindex="-1" href="#operational-semantics-as-growth"><span class="octicon octicon-link"></span></a>Operational Semantics as Growth</h2>
+    <p>Operational semantics is the language.</p>
+    <p>The source language is given in the beginning — by physics, by the hardware, by the instruction set. The task of programming is to grow new operational semantics within that source language: new words, new machines, new substrates.</p>
+    <p>The transistor is the primary word. The gate is a grown word. The register is a grown word. The instruction set is a grown grammar. The compiler is a grown traversal. The language is a grown interface.</p>
+    <p>Each layer grows within the substrate of the layer beneath it. Each layer is complete before the next layer begins. Each layer enforces its invariants by construction.</p>
+    <p>The return-value-oriented composition paradigm breaks this chain. When we build operational semantics on top of a return-based execution model, we import the implicit assumptions of that model into every layer above it. The call stack becomes invisible infrastructure. The return address becomes an untyped global. The execution model becomes the substrate, and the substrate is borrowed, undocumented, and untyped at its boundaries.</p>
+    <p>Typed steps restore the chain. Each typed machine is a complete substrate. Each typed interface is a complete specification. Each typed composition is a complete proof that the interface is satisfied.</p>
+    <p>Grow the substrate. Type the circuit. The direction is from bottom up.</p>
+    <h2 id="the-universal-interface"><a class="anchor" aria-hidden="true" tabindex="-1" href="#the-universal-interface"><span class="octicon octicon-link"></span></a>The Universal Interface</h2>
+    <p>A CPU has pins. The pins are the typed interface. Any board with a compatible socket can receive the CPU. The interface is physical, typed, and universal. No source code is required to use it. The interface is the contract. The contract is enforced by construction.</p>
+    <p>Software carries a different tradition: the function signature as interface, the call convention as protocol, the documentation as contract. The contract is advisory. Compliance is voluntary. Enforcement is the programmer's discipline.</p>
+    <p>Typed steps give software what hardware has always had.</p>
+    <p>Each typed machine lays out in binary as a structured type. The layout is predictable. The layout is hashable. The hash is the handshake between the binary and the type:</p>
+    <pre><code class="code-highlight"><span class="code-line line-number" line="1">ωξω, ωξω, ωξω, ωξω, ... ωξω
+</span></code><div onclick="copied(this)" data-code="ωξω, ωξω, ωξω, ωξω, ... ωξω
+" class="copied"><svg class="octicon-copy" aria-hidden="true" viewBox="0 0 16 16" fill="currentColor" height="12" width="12"><path fill-rule="evenodd" d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"></path><path fill-rule="evenodd" d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"></path></svg><svg class="octicon-check" aria-hidden="true" viewBox="0 0 16 16" fill="currentColor" height="12" width="12"><path fill-rule="evenodd" d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"></path></svg></div></pre>
+    <p>That is a crystallized, hashable form of a 10-cell circular tape machine. Index into it and we have a universal interface. Compose it with another typed machine and the interfaces compose. The hash of richer operational semantics preserves the universal interface all the way down.</p>
+    <p>Root of trust at the substrate. Crown of complexity at the top. One unbroken chain.</p>
+    <p>The hash is the proof that the tower stands on the ground and not on air.</p>
+    <h2 id="what-language-is"><a class="anchor" aria-hidden="true" tabindex="-1" href="#what-language-is"><span class="octicon octicon-link"></span></a>What Language Is</h2>
+    <p>Language is grown operational semantics.</p>
+    <p>Every natural language is a set of typed steps grown by a community over millennia, constrained by the physics of sound and meaning, enforced by the circuit of shared understanding. A word that means nothing to its receiver is a type error. A sentence that admits no valid continuation is a dead end.</p>
+    <p>Every programming language is a set of typed steps grown by a community over decades, constrained by the physics of computation and hardware, enforced by the circuit of compiler and type checker.</p>
+    <p>The difference between a good language and a poor one is the size of the gap between the language's semantics and the substrate's semantics. A language that maps cleanly to the substrate — that grows from the substrate rather than floating above it — carries less overhead, fewer bugs, and richer composition.</p>
+    <p>The substrate speaks first. The language grows toward it. The programmer grows the language.</p>
+    <p>Operational semantics must be imaginable before syntax can be designed. We count sheep before we write numerals. We run circuits before we write programs. The semantics — the act of stepping — precedes the syntax that names it.</p>
+    <p>The return statement is a syntax that names the wrong semantics. It names termination where there should be continuation. It names collapse where there should be growth.</p>
+    <p>The typed step names the right semantics. It names the wire, the transition, the circuit, the ground.</p>
+    <h2 id="the-compiler-as-grower"><a class="anchor" aria-hidden="true" tabindex="-1" href="#the-compiler-as-grower"><span class="octicon octicon-link"></span></a>The Compiler as Grower</h2>
+    <p>A compiler today takes a description and produces a binary. The type information dissolves at the boundary. The binary carries no typed interface. It is an executable blob that trusts its caller to know what it expects.</p>
+    <p>A compiler that understands typed steps grows typed machine binaries. The type is crystallized into the binary layout. The hash is computed. The interface is enforced at the binary boundary, not just at the source boundary.</p>
+    <p>The compilation pipeline becomes a growth process. Each compiled machine is a typed substrate for the next layer. The type does not dissolve at the boundary. The type is the boundary.</p>
+    <p>Such a compiler does not translate. It grows. It takes typed steps in the source language and produces typed steps in the machine language. The circuit at the source level and the circuit at the machine level are the same circuit, expressed in different substrates.</p>
+    <p>This is the compiler we are growing toward. The compiler that closes the gap between the type system and physics. The compiler that makes the tower stand on bedrock.</p>
+    <h2 id="in-the-beginning"><a class="anchor" aria-hidden="true" tabindex="-1" href="#in-the-beginning"><span class="octicon octicon-link"></span></a>In the Beginning</h2>
+    <p>In the beginning was the Step.</p>
+    <p>The substrate was stepping before we arrived. Physics was transitioning, enforcing, composing — with zero overhead, zero translation, zero gap between specification and realization.</p>
+    <p>We arrived and named it. We called it computation. We called it hardware. We called it software. We drew a line between what runs and what describes what should run.</p>
+    <p>The line is the problem. The line is the overhead. The line is the gap where bugs live and attacks land.</p>
+    <p>Typed semantics is the discipline of closing the line. Every typed step is a reduction of the gap. Every typed interface is a proof of local closure. Every typed composition is a step toward the substrate.</p>
+    <p>Hardware is how far we have grown.</p>
+    <p>Software is the distance that remains.</p>
+    <p>And the distance is not fixed. The distance closes with every typed step we take.</p>
+    <p>The Step is the primitive truth.</p>
+    <p>The Machine is the boundary that gives the Step meaning.</p>
+    <p>Composition of Machines is all computation.</p>
+    <p>
+      In the beginning was the Step,
+      And the Step is still stepping,
+      And it always will be.
+    </p>
     <script>/*! @uiw/copy-to-clipboard v1.0.12 | MIT (c) 2021 Kenny Wang | https://github.com/uiwjs/copy-to-clipboard.git */
 !function(e,t){"object"==typeof exports&&"undefined"!=typeof module?module.exports=t():"function"==typeof define&&define.amd?define(t):(e="undefined"!=typeof globalThis?globalThis:e||self).copyTextToClipboard=t()}(this,(function(){"use strict";return function(e,t){const o=document.createElement("textarea");o.value=e,o.setAttribute("readonly",""),o.style={position:"absolute",left:"-9999px"},document.body.appendChild(o);const n=document.getSelection().rangeCount>0&&document.getSelection().getRangeAt(0);o.select();let c=!1;try{c=!!document.execCommand("copy")}catch(e){c=!1}document.body.removeChild(o),n&&document.getSelection&&(document.getSelection().removeAllRanges(),document.getSelection().addRange(n)),t&&t(c)}}));
 
