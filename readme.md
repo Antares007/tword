@@ -18,11 +18,11 @@ and dynamically traversable. Represent your grammar as an [Ambiguous Step Graph]
 pure void tail-recursive functions that receive their entire
 instruction set from the traversal as parameters.
 
-[S -> "b" | S "a"](https://mermaid.live/edit#pako:eNqdk8lugzAURX_FemtATM7gRVV1WHbVripLkQEzqGAjY6tNEf9eQ9qQdEwqWGB8zzv2A_eQyowDAdd1qUilyKuCUIFQzbbSaIJ4_UTFNJnX8jktmdLo4com7v1NcNmjrmQtJ0jxVDsWSnhNEIVxkgIakOu5F8iISger0xnXMomNJ3O2M0mrZMq77oBI5viB4gDSLKtMc-SYVzX5TgWOHPbePW_CH3fzEZh9tyI7Hxy9zGLsj1awOX7kOWi3Vqx1vzF9-VDW_Q_enVq6J39r6nsjP2uDs-H9dscLHChUlQHRynAHGq4aNg6hH_9nCrrkDacw1sh4zkytKVAxWKxl4lHK5oNU0hQlkJzVnR2ZNmOa31SsUKzZv1VcZFxdSyM0kBBPNYD08AIEB5EXxosoWqyD0I9WSwe2QFa-F0V-HGAc42UU4sXgwOsk9T28DtarMIxxHOMQB7Yazyot1d3uaE4ndHgDncAhyQ)
+[S -> "b" | S "a"](https://mermaid.live/edit#pako:eNqdk0lvhCAYhv8K-c5q1FlEDk3T5djT9NSQTFBxSRUMQtqpmf9enKU6XWeaYALhfXjkA3pIZcaBgOu6VKRS5FVBqECoZhtpNEG8fqZiN5nX8iUtmdLo8cYmVuvgukddyVpOkOKpdiyT8JogCnaOAtoi13OvkBGVDvC5hGuJxIaTMdqZpFUy5V03AZIxPgomjGZZZZqpYfyjQXZe-mR52_b9dfjjPo6BUXYvssvBwcssxv6oAhvjJ55JobVirfuN6csJWfc_-EG9-gB_K-mhjp-twcXwYbfgQKGqDIhWhjvQcNWwYQj9cH8p6JI3nMJAZzxnptYUqNharGXiScrmSCppihJIzurOjkybMc3vKlYoNka4yLi6lUZoIIvdCkB6eAUS-jPPD3AQhWGI5z6Olw5sgMSBh-NouYiW0XzhxzO8deBt5_Q97Ic4igL7hRjjADvAs0pL9bB_ibsHuX0HXe4dcg)
 
 ```c
-void S0(ο o, τε op0, τγγ op1, ταγ op2, τγγ op3) {
-  op1.step(o, (γ){S0_1}, (γ){unit18});
+void S(ο o, τε op0, τγγ op1, ταγ op2, τγγ op3) {
+  op1.step(o, (γ){unit18}, (γ){S_1});
 }
 ```
 
