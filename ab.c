@@ -30,10 +30,10 @@ void a(ο o, τε ascend, τγ and, τε or, γ unit2) {
   else ascend.step(o);
 }
 void  S0(ο o, τε op0, τγγ op1, ταγ op2, τγγ op3);
-void End(ο o, τε op0, τγγ op1, ταγ op2, τγγ op3) { op0.step(o); }
-void S12(ο o, τε op0, τγγ op1, ταγ op2, τγγ op3) { op2.step(o, (α){a},  (γ){End}); }
+void dot(ο o, τε op0, τγγ op1, ταγ op2, τγγ op3) { op0.step(o); }
+void S12(ο o, τε op0, τγγ op1, ταγ op2, τγγ op3) { op2.step(o, (α){a},  (γ){dot}); }
 void S11(ο o, τε op0, τγγ op1, ταγ op2, τγγ op3) { op3.step(o, (γ){S0}, (γ){S12}); }
-void  S1(ο o, τε op0, τγγ op1, ταγ op2, τγγ op3) { op1.step(o, (γ){End},(γ){S11}); }
+void  S1(ο o, τε op0, τγγ op1, ταγ op2, τγγ op3) { op1.step(o, (γ){dot},(γ){S11}); }
 void S01(ο o, τε op0, τγγ op1, ταγ op2, τγγ op3) { op2.step(o, (α){b},  (γ){S1}); }
 void  S0(ο o, τε op0, τγγ op1, ταγ op2, τγγ op3) { op1.step(o, (γ){S1}, (γ){S01}); }
 extern int printf(const char *__restrict __format, ...);
@@ -46,14 +46,16 @@ void accept(ο o, τε op0, τγγ op1, ταγ op2, τγγ op3) {
 typedef γ op1_t;
 typedef α op2_t;
 typedef γ op3_t;
+#include"grammar.h"
+#undef Γ
+#undef Δ
 #define Γ(name)                                                               \
   void name(ο o, τε op0, τγγ op1, ταγ op2, τγγ op3)
 #define Δ(unit2, opcode, unit1, name)                                         \
     Γ(name) { op##opcode.step(o, (op##opcode##_t){unit1}, (γ){unit2}); }
-#include"grammar.h"
 
 D(S, 2, b,         A)D(A,
-     3, S, 2, a, End)
+     3, S, 2, a, dot)
 
 void Pink_3(ο o, γ unit1, γ unit2);
 int main() {
